@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /transactions/{document=**} {
+
+      // onyl auth
+      allow create: if request.auth != null 
+
+      //onlu logged in user uid must match the document
+      allow read, delete: if request.auth.uid == resource.data.uid
+    }
+  }
+}
